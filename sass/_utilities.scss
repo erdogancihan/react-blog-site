@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+  font-family: "Noto Sans", sans-serif;
+}
+body {
+  overflow-x: hidden;
+  background-color: #fefefe;
+}
+
+//colors
+$primary-text:#454545;
+$primary-text-hover:#111;
+$secondary-text:#ddd;
+$secondary-text-hover:#fff;
+$primary-side:#454545;
+$secondary-side:#454545;
+$secondary-side-hover:#000;
+$footer-primary-side:#ddd;
+$footer-primary-side-hover:#fff;
+$footer-secondary-side:#ddd;
+$footer-secondary-side-hover:#fff;
+$text-light:#777;
+
+//text
+
+.text-right{
+  text-align: right;
+}
+.text-center{
+  text-align: center;
+}
+.text-light{
+  color:$text-light;
+}
+
+a{
+  cursor: pointer;
+  color: $primary-text ;
+  text-decoration: none;
+  &:hover {
+    color: $primary-text-hover ;
+    font-weight: 600;
+  }
+}
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+}
+.main {
+  max-width: 1000px;
+  display: flex ;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch;
+  margin: 2.5em auto;
+  padding: 0;
+}
+.placeholder {
+  position: relative;
+  top: 45px;
+  height: 50px;
+  width: 100%;
+}
+
+@media (max-width:1000px){
+  #sidebar-container{
+    display:none;
+  }
+}

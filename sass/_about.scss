@@ -1,0 +1,16 @@
+.about-container {
+  max-width: 800px;
+  padding: 1em 2em;
+  margin-top: 0.5em;
+  box-shadow: 5px 5px 5px#ddd;
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  h2 {
+    margin-bottom: 1em;
+  }
+  p {
+    margin-bottom: 1em;
+    color: #454545;
+    line-height: 1.5em;
+  }
+}

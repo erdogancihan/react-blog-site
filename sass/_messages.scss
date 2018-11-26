@@ -1,0 +1,58 @@
+.messages-container-hide {
+  display: none;
+}
+.messages-container {
+  border: 1px solid #eee;
+  position: relative;
+  width: 100%;
+  margin: 0.5em;
+  padding: 0.5em;
+  overflow: hidden;
+  text-align: justify;
+  line-height: 1.5em;
+  color: #454545;
+  
+  padding-right: 1em;
+  z-index: 0;
+
+  h4 {
+    padding: 0.5em;
+    border-bottom: 1px solid #eee;
+  }
+  .message {
+    border: 1px solid #eee;
+    margin-top: 1em;
+    padding: 0.5em;
+    font-size: 0.8em;
+    textarea {
+      width: 100%;
+      height: 5.1em;
+      border: 1px solid #eee;
+      padding: 1em;
+    }
+    .button {
+      margin: 1em 0;
+      border-radius: 15px;
+      height: 2em;
+      width: 100px;
+      outline: none;
+      color: $primary-text;
+      background-color: #eee;
+      font-size: 1em;
+    }
+  }
+  .delete-button {
+    margin-top: 0em;
+    font-size: 1.2em;
+
+    cursor: pointer;
+    color: $primary-text;
+    &:hover {
+      color: $primary-text-hover;
+      font-weight: 600;
+    }
+  }
+}
+.user-only {
+  display: inline-block;
+}

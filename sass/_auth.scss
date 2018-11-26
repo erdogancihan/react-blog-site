@@ -1,0 +1,65 @@
+form {
+ 
+  h2{
+      margin-bottom:1em;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5em;
+    color: $primary-text;
+  }
+  input[type="email"] {
+    border-radius: 15px;
+    height: 2.5em;
+    width: 100%;
+    outline: none;
+    padding: 0 0.5em;
+    margin-bottom: 0.5em;
+    color: $primary-text;
+  }
+  input[type="text"] {
+    border-radius: 15px;
+    height: 2.5em;
+    width: 100%;
+    outline: none;
+    padding: 0 0.5em;
+    margin-bottom: 0.5em;
+    color: $primary-text;
+  }
+  input[type="password"] {
+    border-radius: 15px;
+    height: 2.5em;
+    width: 100%;
+    outline: none;
+    padding: 0 0.5em;
+    margin-bottom: 0.5em;
+    color: $primary-text;
+  }
+  .button {
+    margin: 1em 0;
+    border-radius: 15px;
+    height: 2em;
+    width: 100px;
+    outline: none;
+    color: $primary-text;
+    background-color: #eee;
+    font-size: 1em;
+  }
+}
+.center{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+}
+.toogle{
+    cursor: pointer;
+    color: $primary-text;
+    &:hover {
+      color: $primary-text-hover;
+      font-weight: 600;
+    }
+}

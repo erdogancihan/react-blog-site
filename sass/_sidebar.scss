@@ -1,0 +1,118 @@
+.sidebar-container {
+  margin-top: 0.5em;
+  // position: absolute;
+  //width:150px;
+  position: sticky;
+  top: 95px;
+  //min-width:200px;
+}
+
+//Archives side menu
+.dropdown {
+  outline: none;
+  padding: 0;
+
+  h4 {
+    font-weight: 400;
+    display: inline-block;
+
+    &:hover {
+      font-weight: 600;
+    }
+  }
+}
+
+.category-side {
+  list-style: none;
+}
+
+.dropdown-content-side {
+  display: flex;
+
+  li {
+    text-align: left;
+    padding: 0.3em 1em;
+    color: $secondary-side;
+    font-size: 0.9em;
+    
+    &:hover {
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .archive-list{
+      width:150px;
+      border-top: 1px solid #ccc;
+    }
+  }
+}
+
+.sidebar {
+  //border: 1px solid blue;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+}
+.sidenav {
+  margin-bottom: 1em;
+  width: 180px;
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  box-shadow: 5px 5px 5px#ddd;
+  text-align: left;
+  border-top: 1px solid #ccc;
+  h4 {
+    padding: 0.5em 1em;
+  }
+  ul {
+    list-style: none;
+
+    li {
+      //border-top: 1px solid #ccc;
+      text-align: left;
+      padding: 0.3em 1em;
+      color: $secondary-side;
+      font-size: 0.9em;
+     
+      &:hover {
+        color: $secondary-side-hover;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .article-list {
+        border-top: 1px solid #ccc;
+        
+      }
+      .article-list-date {
+        font-size: 0.8em;
+        color: $primary-side;
+        font-weight: 300;
+      }
+    }
+  }
+  table {
+    padding: 0em 0.5em;
+    width: 180px;
+  }
+  .th-archive {
+    text-align: left;
+    padding: 0 0.5em;
+    color: $secondary-side;
+    font-size: 1em;
+    border-top: 1px solid #ccc;
+  }
+  .td-archive {
+    text-align: left;
+    padding: 0em 1em;
+    color: $secondary-side;
+    font-size: 0.8em;
+    &:hover {
+      color: $secondary-side-hover;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+}
