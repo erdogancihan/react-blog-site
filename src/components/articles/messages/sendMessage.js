@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+
 import { addMessage } from "../../../store/actions/messagesActionCreator";
 
 export class SendMessage extends Component {
   state = {
     message: {
-      id: null,
       articleId: this.props.articleId,
-      author: "erd",
-      authorId:"1",
+      author: "",
+      authorId: "1",
       date: "",
-      content: ""
+      content: "",
+    
     }
   };
   handleChange = e => {
@@ -20,24 +21,34 @@ export class SendMessage extends Component {
     });
   };
 
+  //adds message
   handleAddMessage = e => {
     e.preventDefault();
-    this.props.addMessage(this.state.message);
-    this.setState({
-      message: { ...this.state.message,content:"" }
-    },console.log("message sent",this.state));
-    
+    console.log(this.props.user);
+    if (this.props.user.userId !== null) {
+      this.props.addMessage(this.state.message);
+      this.setState(
+        {
+          message: { ...this.state.message, content: "" }
+        },
+        console.log("message sent", this.state)
+      );
+    }
   };
 
   render() {
-    const {strings}=this.props;
+    const { strings } = this.props;
     return (
       <div className="message">
         <form onSubmit={this.handleAddMessage}>
-        <h4>
-          <i>{strings.messages.writeMessage}</i>
-        </h4>
-          <textarea id="content" onChange={this.handleChange} value={this.state.message.content} />
+          <h4>
+            <i>{strings.messages.writeMessage}</i>
+          </h4>
+          <textarea
+            id="content"
+            onChange={this.handleChange}
+            value={this.state.message.content}
+          />
           <button className="button">{strings.common.send}</button>
         </form>
       </div>
@@ -45,7 +56,11 @@ export class SendMessage extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => {
+  return {
+    user: state.firestore.data.user
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {

@@ -1,52 +1,27 @@
-import {
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILURE,
-  SIGNIN_SUCCESS,
-  SIGNIN_FAILURE,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAILURE
-} from "../actions/usersActions";
+import { SUCCESS, FAILURE, UNMOUNT } from "../actions/usersActions";
 
 const initialState = {
-  user: {},
-  error: null
+  error: false,
+  response: false
 };
+
 
 const users = (state = initialState, action) => {
   switch (action.type) {
-    case SIGNUP_SUCCESS:
+    case SUCCESS:
       return {
-        ...state,
-        error: null
+        error: false,
+        response: true
       };
-    case SIGNUP_FAILURE:
+    case FAILURE:
       return {
-        ...state,
-        error: action.error
+        error: action.error,
+        response: false
       };
-
-    case SIGNIN_SUCCESS:
+    case UNMOUNT:
       return {
-        ...state,
-        error: null,
-        user: action.user
-      };
-    case SIGNIN_FAILURE:
-      return {
-        ...state,
-        error: action.error
-      };
-    case LOGOUT_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        user: { id: null, userId: null, user: null }
-      };
-
-    case LOGOUT_FAILURE:
-      return {
-        ...state,
-        error: action.error
+        error: false,
+        response: false
       };
     default:
       return state;

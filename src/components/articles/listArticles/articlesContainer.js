@@ -1,45 +1,49 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { actionTypes } from "redux-firestore";
+import PropTypes from "prop-types";
 import moment from "moment";
 import "moment/locale/tr";
 import "moment/locale/de";
 import "moment/locale/en-gb";
 
 import ListArticles from "./listArticles";
-import {
-  fetchArticles,
-  deleteArticle
-} from "../../../store/actions/articlesActionCreator";
-import { fetchMessages } from "../../../store/actions/messagesActionCreator";
+import { deleteArticle } from "../../../store/actions/articlesActionCreator";
 
 class ArticlesContainer extends Component {
-  state = {
-    articles: []
-  };
-  componentDidMount() {
-    // console.log(this.props.articles)
-    if (this.props.articles.articles.length === 0) {
-      this.props.fetchArticles();
-      this.props.fetchMessages();
-    }
-    this.setState({
-      articles: this.props.articles.articles.slice(0, 5)
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      articles: []
+    };
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    //console.log("pre", previousProps);
-    // console.log("after", this.props);
-    //shows recent five articles.
-    if (previousProps.articles !== this.props.articles) {
-      if (this.props.articles.view && this.props.articles.view.all === true) {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  };
+
+  componentDidMount() {
+    const { firestore} = this.context.store;
+    console.log(this.props.language)
+    firestore.get({
+      collection: "articles",
+      where: ["language", "==", this.props.language],
+      orderBy: ["date", "desc"]
+    });
+    //it sets first five articles to the state
+    console.log(this.props.articles);
+    if (this.props.articles) {
+      if (this.props.view.all === true) {
         return this.setState({
-          articles: this.props.articles.articles.slice(0, 5)
+          articles: this.props.articles.slice(5)
         });
         //shows the selected article from last articleslist
-      } else if (this.props.articles.view.single !== "") {
-        this.props.articles.articles.map(article => {
-          if (article.id === this.props.articles.view.single) {
+      } else if (this.props.view.single !== "") {
+        console.log("viewcı", this.props.view);
+        this.props.articles.map(article => {
+          if (article.id === this.props.view.single) {
             return this.setState({
               articles: [article]
             });
@@ -47,13 +51,13 @@ class ArticlesContainer extends Component {
           return null;
         });
         //shows articles according to months
-      } else if (this.props.articles.view.monthly !== "") {
+      } else if (this.props.view.monthly !== "") {
         let articlesFiltered = [];
-        this.props.articles.articles.map(article => {
+        this.props.articles.map(article => {
           let y = new Date(article.date).getFullYear();
           let m = new Date(article.date).getMonth();
           let date = y + "/" + m;
-          if (date === this.props.articles.view.monthly) {
+          if (date === this.props.view.monthly) {
             return articlesFiltered.push(article);
           }
           return null;
@@ -62,11 +66,11 @@ class ArticlesContainer extends Component {
         this.setState({
           articles: articlesFiltered
         });
-        //shows articles accorting to its category
-      } else if (this.props.articles.view.category !== "") {
+        //shows articles according to its category
+      } else if (this.props.view.category !== "") {
         let articlesFiltered = [];
-        this.props.articles.articles.map(article => {
-          if (article.category === this.props.articles.view.category) {
+        this.props.articles.map(article => {
+          if (article.category === this.props.view.category) {
             return articlesFiltered.push(article);
           }
           return null;
@@ -77,7 +81,75 @@ class ArticlesContainer extends Component {
         });
       }
     }
-    
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.language !== this.props.language) {
+      console.log(this.props.language)
+      const { firestore } = this.context.store;
+      firestore.get({
+        collection: "articles",
+        where: ["language", "==", this.props.language],
+        orderBy: ["date", "desc"]
+      });
+
+      this.setState({
+        articles: this.props.articles
+      });
+    }
+    //console.log("pre", previousProps);
+    // console.log("after", this.props.view.category);
+    //shows recent five articles.
+    if (
+      previousProps.articles !== this.props.articles ||
+      previousProps.view !== this.props.view
+    ) {
+      if (this.props.view.all === true) {
+        return this.setState({
+          articles: this.props.articles
+        });
+        //shows the selected article from last articleslist
+      } else if (this.props.view.single !== "") {
+        console.log("viewcı", this.props.view);
+        this.props.articles.map(article => {
+          if (article.id === this.props.view.single) {
+            return this.setState({
+              articles: [article]
+            });
+          }
+          return null;
+        });
+        //shows articles according to months
+      } else if (this.props.view.monthly !== "") {
+        let articlesFiltered = [];
+        this.props.articles.map(article => {
+          let y = new Date(article.date).getFullYear();
+          let m = new Date(article.date).getMonth();
+          let date = y + "/" + m;
+          if (date === this.props.view.monthly) {
+            return articlesFiltered.push(article);
+          }
+          return null;
+        });
+
+        this.setState({
+          articles: articlesFiltered
+        });
+        //shows articles according to its category
+      } else if (this.props.view.category !== "") {
+        let articlesFiltered = [];
+        this.props.articles.map(article => {
+          if (article.category === this.props.view.category) {
+            return articlesFiltered.push(article);
+          }
+          return null;
+        });
+
+        this.setState({
+          articles: articlesFiltered
+        });
+      }
+    }
   }
 
   //deletes article
@@ -87,8 +159,8 @@ class ArticlesContainer extends Component {
   };
 
   render() {
-    const { articles, user, strings } = this.props;
-    
+    const { articles, user, strings,auth } = this.props;
+    //it sets moment locale according to the selected language.
     if (strings.language === "tr") {
       moment.locale("tr");
     } else if (strings.language === "en") {
@@ -96,7 +168,7 @@ class ArticlesContainer extends Component {
     } else if (strings.language === "de") {
       moment.locale("de");
     }
-    if (articles.loading === true) {
+    if (!articles) {
       return <div>Loading...</div>;
     } else {
       return (
@@ -105,6 +177,7 @@ class ArticlesContainer extends Component {
             articles={this.state.articles}
             handleDelete={this.handleDelete}
             user={user}
+            auth={auth}
             strings={strings}
           />
         </div>
@@ -113,23 +186,27 @@ class ArticlesContainer extends Component {
   }
 }
 const mapStateToProps = state => {
- 
+  //console.log(state)
   return {
-    articles: state.articles,
-    messages: state.messages,
-    user: state.users.user,
+    language: state.language.language,
+    articles: state.firestore.ordered.articles,
+    messages: state.firestore.ordered.messages,
+    user: state.firestore.data.user,
+    view: state.views.view,
+    auth:state.firebase.auth,
     strings: state.language
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchArticles: () => dispatch(fetchArticles()),
-    deleteArticle: article => dispatch(deleteArticle(article)),
-    fetchMessages: () => dispatch(fetchMessages())
+    deleteArticle: article => dispatch(deleteArticle(article))
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect([])
 )(ArticlesContainer);

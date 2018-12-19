@@ -19,17 +19,18 @@ const SideNavDated = ({ articles, showArticle, strings }) => {
       single: "",
       all: false,
       monthly: month,
-      category:""
+      category: ""
     };
     showArticle(view);
   };
 
   //gets the count of articles according to  months
-  articles.map(article => {
-    article.date = new Date(article.date);
-    let monthYear = article.date.getFullYear() + "/" + article.date.getMonth();
-    return (monthsCount[monthYear] = (monthsCount[monthYear] || 0) + 1);
-  });
+  articles &&
+    articles.map(article => {
+      let articleDate = new Date(article.date);
+      let monthYear = articleDate.getFullYear() + "/" + articleDate.getMonth();
+      return (monthsCount[monthYear] = (monthsCount[monthYear] || 0) + 1);
+    });
   var countsArray = [];
 
   for (let [key, value] of Object.entries(monthsCount)) {
@@ -38,38 +39,40 @@ const SideNavDated = ({ articles, showArticle, strings }) => {
   }
 
   //puts article years to the list
-  articles.map(article => {
-    article.date = new Date(article.date);
-    if (article.date.getFullYear() !== lastYear) {
-   rows.push(
-        <SidenavArchivesYears
-          year={article.date.getFullYear()}
-          key={article.date.getFullYear()}
-        />
-      );
-    }
+  articles &&
+    articles.map(article => {
+      let articleDate = new Date(article.date);
+      if (articleDate.getFullYear() !== lastYear) {
+        rows.push(
+          <SidenavArchivesYears
+            year={articleDate.getFullYear()}
+            key={articleDate.getFullYear()}
+          />
+        );
+      }
 
-    //puts article months to the list
-    if (article.date.getFullYear() + article.date.getMonth() !== lastMonth) {
-      rows.push(
-        <SidenavArchivesMonths
-          key={article.date.getFullYear() + "/" + article.date.getMonth()}
-          month={article.date.getMonth()}
-          year={article.date.getFullYear()}
-          handleShowArticle={handleShowArticle}
-          monthsCount={countsArray}
-          strings={strings}
-        />
-      );
-    } 
-    lastYear = article.date.getFullYear();
-    lastMonth = article.date.getFullYear() + article.date.getMonth();
-  });
+      //puts article months to the list
+      if (articleDate.getFullYear() + articleDate.getMonth() !== lastMonth) {
+        rows.push(
+          <SidenavArchivesMonths
+            key={articleDate.getFullYear() + "/" + articleDate.getMonth()}
+            month={articleDate.getMonth()}
+            year={articleDate.getFullYear()}
+            handleShowArticle={handleShowArticle}
+            monthsCount={countsArray}
+            strings={strings}
+          />
+        );
+      }
+      lastYear = articleDate.getFullYear();
+      lastMonth = articleDate.getFullYear() + articleDate.getMonth();
+    });
 
   return (
     <div className="sidenav">
       <h4>
-        <i className="fas fa-archive" /> <span> </span> {strings.strings.sidebar.archive}
+        <i className="fas fa-archive" /> <span> </span>{" "}
+        {strings.strings.sidebar.archive}
       </h4>
       <table>{rows}</table>
     </div>
@@ -78,8 +81,8 @@ const SideNavDated = ({ articles, showArticle, strings }) => {
 
 const mapStateToProps = state => {
   return {
-    articles: state.articles.articles,
-    strings:state.language
+    articles: state.firestore.ordered.articles,
+    strings: state.language
   };
 };
 const mapDispatchToProps = dispatch => {

@@ -1,0 +1,32 @@
+{
+  "indexes": [
+    {
+      "collectionId": "articles",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "language",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "mode": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "articles",
+      "state": "READY",
+      "fields": [
+        {
+          "fieldPath": "language",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "mode": "ASCENDING"
+        }
+      ]
+    }
+  ]
+}

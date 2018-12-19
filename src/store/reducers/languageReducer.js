@@ -19,20 +19,21 @@ const language = (state = initialState, action) => {
 
       return {
         language: "tr",
-        strings: tr
+        strings: tr,
+        errorMessage:tr.errorMessage
       };
     case LANGUAGE_EN:
-  
-
-      return {
+        return {
         language: "en",
-        strings: en
+        strings: en,
+        errorMessage:en.errorMessage
       };
     case LANGUAGE_DE:
    
       return {
         language: "de",
-        strings: de
+        strings: de,
+        errorMessage:de.errorMessage
       };
 
     default:

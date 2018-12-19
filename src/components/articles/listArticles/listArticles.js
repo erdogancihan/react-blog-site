@@ -3,7 +3,7 @@ import Article from "./article";
 
 class ListArticles extends Component {
   render() {
-    const { articles, handleDelete, user,strings } = this.props;
+    const { articles, handleDelete, user,auth,strings } = this.props;
 
     return (
       <div>
@@ -15,6 +15,7 @@ class ListArticles extends Component {
                 article={article}
                 handleDelete={handleDelete}
                 user={user}
+                auth={auth}
                 strings={strings}
               />
             ));

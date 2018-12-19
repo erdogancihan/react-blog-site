@@ -1,18 +1,18 @@
 .topnav {
   display: flex;
   justify-content: flex-end;
-  margin-right:2em;
-  width:100%;
- 
-  z-index: 100;
-  background-color: #fff;
- 
- position:fixed;
-  .nav {    
+  margin-right: 2em;
+  width: 100%;
+  z-index: 10;
+  background-color: $body-bg;
+  top: 0;
+  height: 28px;
+  .nav {
     list-style: none;
     .nav-item {
       display: inline-block;
-      padding:0.4em;
+      height: 28px;
+      padding: 0.4em;
       &:hover {
         font-weight: 600;
         cursor: pointer;
@@ -20,21 +20,24 @@
     }
   }
 }
-.active-lang{
-  background-color:$primary-text; 
-  color: $secondary-text;
+.active-lang {
+  background-color: $primary-bg;
+  color: $primary-text-light;
 }
 .navbar {
-  z-index: 100;
-  top:30px;
+  z-index: 10;
+  top: 0px;
   display: flex;
-  background-color: $primary-text;
-  color: $secondary-text;
+  background-color: $primary-bg;
+  color: $primary-text-light;
   padding: 1em;
-  width:100%;
-  position:fixed;
+  width: 100%;
+  position: sticky;
   a {
-    color: $secondary-text;
+    color: $primary-text-light;
+    &:hover {
+      color: $primary-text-light-hover;
+    }
   }
   .nav-item {
     padding-right: 8px;
@@ -51,21 +54,23 @@
 }
 .nav-link {
   padding: 0.2em 0.8em;
-}
-
-.dropdown {
-  outline: none;
-  padding:0;
-
-  h4 {
-    font-weight: 400;
-    display: inline-block;
-
-    &:hover {
-      font-weight: 600;
+  .dropdown {
+    outline: none;
+    padding: 0;
+  
+    h4 {
+      font-weight: 400;
+      display: inline-block;
+  
+      &:hover {
+        font-weight: 400;
+        color: $primary-text-light-hover;
+      }
     }
   }
-}
+ }
+
+
 
 .category {
   list-style: none;
@@ -74,19 +79,23 @@
   display: none;
 
   li {
-    padding: 0.2em 0;
+    padding: 0.4em 0.6em;
+    width: 100px;
+    background-color: $primary-bg;
+    color: $primary-text-light;
     &:hover {
-      font-weight: 600;
+      color: $primary-text-light-hover;
       cursor: pointer;
     }
   }
 }
 .drop {
   display: flex;
-  position: relative;
+  position: absolute;
+  margin-top: 18px;
 }
 
-@media only screen and (max-width: 680px) {
+@media only screen and (max-width: 740px) {
   .navbar-items,
   .navbar {
     flex-direction: column;
@@ -107,8 +116,17 @@
   .navbar-toggleShow {
     display: flex;
   }
-  .article-container{
-    padding:0.6em;
-    margin:0.1em;
+  .article-container {
+    padding: 0.6em;
+    margin: 0.1em;
+  }
+  .drop {
+    margin-top: 0;
+    position: relative;
+  }
+  .dropdown-content {
+    li {
+      padding: 0.4em 1em;
+    }
   }
 }

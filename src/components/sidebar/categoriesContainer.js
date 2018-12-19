@@ -21,7 +21,7 @@ class CategoriesContainer extends Component {
     };
 
     //gets the count of articles according to  category
-    articles.map(article => {
+    articles&&articles.map(article => {
       return (categoryCount[article.category] =
         (categoryCount[article.category] || 0) + 1);
     });
@@ -42,13 +42,15 @@ class CategoriesContainer extends Component {
           categoryCount={Object.values(category)[0]}
         />
       );
+      return null;
     });
 
     return (
       <div className="sidenav">
         <div className="nav-link dropdown">
-          <h4>
-            <i className="fas fa-list-ul" /> <span> </span> {strings.sidebar.categories}
+          <h4 className="sidenav-header">
+            <i className="fas fa-list-ul" /> <span> </span>{" "}
+            {strings.sidebar.categories}
           </h4>
           <div className="dropdown-content-side" id="dropdownContent">
             <ul className="category-side">{rows}</ul>
@@ -61,8 +63,8 @@ class CategoriesContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    articles: state.articles.articles,
-    strings:state.language.strings
+    articles: state.firestore.ordered.articles,
+    strings: state.language.strings
   };
 };
 const mapDispatchToProps = dispatch => {

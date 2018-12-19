@@ -1,22 +1,30 @@
 import { languageTr, languageEn, languageDe } from "./languagesActions";
-import { fetchArticles } from "./articlesActionCreator";
 
 //if session information is lost it gets data from localstorage and set user data
 export function setLanguage(lang) {
   return dispatch => {
     if (lang === "en") {
-      dispatch(languageEn(lang));
       localStorage.setItem("language", "en");
-      return dispatch(fetchArticles());
+      return dispatch(languageEn(lang));
     } else if (lang === "de") {
-      dispatch(languageDe(lang));
       localStorage.setItem("language", "de");
-      return dispatch(fetchArticles());
+      return dispatch(languageDe(lang));
     } else {
-      dispatch(languageTr(lang));
       localStorage.setItem("language", "tr");
-      return dispatch(fetchArticles());
+      return dispatch(languageTr(lang));
     }
   };
 }
 
+export function getLanguage() {
+  return dispatch => {
+    let language = localStorage.getItem("language");
+    if (language === "en") {
+      return dispatch(languageEn(language));
+    } else if (language === "de") {
+      return dispatch(languageDe(language));
+    } else {
+      return dispatch(languageTr(language));
+    }
+  };
+}

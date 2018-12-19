@@ -1,101 +1,81 @@
-import {
-  addArticleSuccess,
-  addArticleFailure,
-  editArticleSuccess,
-  editArticleFailure,
-  deleteArticleSuccess,
-  deleteArticleFailure,
-  fetchArticlesBegin,
-  fetchArticlesSuccess,
-  fetchArticlesFailure,
-  showArticleSuccess
-} from "./articlesActions";
-import axios from "axios";
+import { showArticleSuccess } from "./articlesActions";
 
-const loopBack = "http://localhost:3001/api";
-
-export function addArticle(article) {
+export const addArticle = article => {
   article.date = new Date().toISOString();
   console.log(article);
-  return (dispatch, getState) => {
-    const token = getState().users.user.id;
-    const author = getState().users.user.user.userName;
-    const authorId = getState().users.user.userId;
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const author = getState().firestore.data.user.userName;
+    const authorId = getState().firebase.auth.uid;
     const newArticle = { ...article, author, authorId };
-    axios
-      .request({
-        method: "post",
-        url: loopBack + "/articles?access_token=" + token,
-        data: newArticle
-      })
+
+console.log(newArticle)
+    firestore
+      .collection("articles")
+      .add(
+        newArticle
+      )
       .then(response => {
         console.log(response);
-        return dispatch(addArticleSuccess(response.data));
       })
       .catch(error => {
-        dispatch(addArticleFailure(error));
-        //Some error occurred
+        console.log(error);
       });
   };
-}
+};
 
 export function editArticle(article) {
-  console.log(article.id);
-  return (dispatch, getState) => {
-    const token = getState().users.user.id;
-    axios
-      .request({
-        method: "patch",
-        url: loopBack + "/articles/" + article.id + "?access_token=" + token,
-        data: article
-      })
-      .then(() => {
-        return dispatch(editArticleSuccess(article));
+  return (dispatch, getState, { getFirestore }) => {
+    const fireStore = getFirestore();
+
+    fireStore
+      .update({ collection: "articles", doc: article.id }, article)
+      .then(resp => {
+        return console.log(resp);
       })
       .catch(error => {
-        dispatch(editArticleFailure(error));
-        //Some error occurred
+        console.log(error);
       });
   };
 }
 
 export function deleteArticle(article) {
   console.log(article.id);
-  return (dispatch, getState) => {
-    const token = getState().users.user.id;
-    axios
-      .request({
-        method: "delete",
-        url: loopBack + "/articles/" + article.id + "?access_token=" + token
-      })
-      .then(() => {
-        return dispatch(deleteArticleSuccess(article));
+
+  return (dispatch, getState, { getFirestore }) => {
+    const fireStore = getFirestore();
+    fireStore
+      .delete({ collection: "articles", doc: article.id })
+      .then(resp => {
+        return console.log(resp);
       })
       .catch(error => {
-        dispatch(deleteArticleFailure(error));
-        //Some error occurred
+        console.log(error);
       });
   };
 }
-
+/*
 export function fetchArticles() {
-  return (dispatch, getState) => {
-    const token = getState().users.user.id;
+  
+  return (dispatch, getState, { getFirestore }) => {
     const language = getState().language.language;
-    let filter = `[where][lang]=${language}&[access_token]=${token}`;
-    dispatch(fetchArticlesBegin());
-    return axios
-      .get(loopBack + "/articles?filter" + filter)
+    const fireStore = getFirestore();
+    console.log(language)
+    fireStore
+      .get({
+        collection: "articles",
+        where: ["language", "==", language],
+        orderBy: ["date","desc"]
+      })
       .then(response => {
-        return dispatch(fetchArticlesSuccess(response.data));
+        return console.log(response);
       })
       .catch(error => {
-        dispatch(fetchArticlesFailure(error));
-        //Some error occurred
+        return console.log(error);
       });
   };
 }
-
+*/
 export function showArticle(view) {
   return dispatch => {
     dispatch(showArticleSuccess(view));

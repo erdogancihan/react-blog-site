@@ -1,31 +1,54 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-const about = () => {
-  return (
-   
-     <div className="about-container">
-      <h2>Ben Kimim?</h2>
-      <p>
-        {" "}
-        “Târih bilmeyen siyâsetçi, pusula kullanmasını bilmeyen kaptana benzer.
-        İkisi de gemiyi oturtur; kaptanın oturttuğu bir gemidir, siyâsetçinin
-        karaya oturttuğu ise DEVLET gemisidir.”{" "}
-      </p>
-      <p>
-        {" "}
-        “Târih bilmeyen siyâsetçi, pusula kullanmasını bilmeyen kaptana benzer.
-        İkisi de gemiyi oturtur; kaptanın oturttuğu bir gemidir, siyâsetçinin
-        karaya oturttuğu ise DEVLET gemisidir.”{" "}
-      </p>
-      <p>
-        {" "}
-        “Târih bilmeyen siyâsetçi, pusula kullanmasını bilmeyen kaptana benzer.
-        İkisi de gemiyi oturtur; kaptanın oturttuğu bir gemidir, siyâsetçinin
-        karaya oturttuğu ise DEVLET gemisidir.”{" "}
-      </p>
-    </div>
-  
-  );
+class About extends Component {
+  render() {
+    const { lang } = this.props;
+
+    return (
+      <div className="about-container">
+        {lang === "en" ? (
+          <div>
+           
+            <h2>About Me</h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              officiis recusandae fugiat tempore, magni praesentium ab
+              reiciendis eos iure. Odit ex eligendi soluta recusandae adipisci
+              molestias veritatis cum placeat dolore.
+            </p>
+          </div>
+        ) : null}
+        {lang === "tr" ? (
+          <div>
+            <h2>Ben Kimim?</h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              officiis recusandae fugiat tempore, magni praesentium ab
+              reiciendis eos iure. Odit ex eligendi soluta recusandae adipisci
+              molestias veritatis cum placeat dolore.
+            </p>
+          </div>
+        ) : null}
+        {lang === "de" ? (
+          <div>
+            <h2>About Me</h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              officiis recusandae fugiat tempore, magni praesentium ab
+              reiciendis eos iure. Odit ex eligendi soluta recusandae adipisci
+              molestias veritatis cum placeat dolore.
+            </p>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+   return {
+    lang: state.language.language,
+  };
 };
-
-export default about;
+export default connect(mapStateToProps)(About);

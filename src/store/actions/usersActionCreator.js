@@ -1,103 +1,235 @@
-import axios from "axios";
+import { actionTypes } from "redux-firestore";
+import { Success, Failure } from "./usersActions";
 
-import {
-  signUpSuccess,
-  signUpFailure,
-  signInSuccess,
-  signInFailure,
-  logOutSuccess,
-  logOutFailure
-} from "./usersActions";
+export const errorMessage = (error, getState) => {
+  console.log(getState());
+  let language = getState().language;
+  console.log(error);
+  switch (error.code) {
+    case "auth/invalid-email":
+      return language.errorMessage.invalidEmail;
+    case "auth/invalid-password":
+      return language.errorMessage.invalidPassword;
+    case "auth/maximum-user-count-exceeded":
+      return language.errorMessage.maximumUserCountExceeded;
+    case "auth/email-already-exists":
+      return language.errorMessage.emailAlreadyExists;
+    case "auth/user-not-found":
+      return language.errorMessage.userNotFound;
+    case "auth/internal-error":
+      return language.errorMessage.internalError;
+    case "auth/network-request-failed":
+      return language.errorMessage.authNetworkRequestFailed;
+    case "auth/wrong-password":
+      return language.errorMessage.wrongPassword;
+    case "auth/email-already-in-use":
+      return language.errorMessage.emailAlreadyInUse;
+    case "auth/weak-password":
+      return language.errorMessage.weakPassword;
+    case "emailNotVerified":
+      return language.errorMessage.emailNotVerified;
+    default:
+      return error.message;
+  }
+};
 
-const loopBack = "http://localhost:3001/api";
-
-export function signUpUser(user) {
-  let userEmail = user.email;
-  let userPassword = user.password;
-  let userName = user.userName;
-  let credentials = {
-    email: userEmail,
-    password: userPassword,
-    userName: userName
-  };
-  console.log(credentials);
-  return dispatch => {
-    axios
-      .request({
-        method: "post",
-        url: loopBack + "/blogusers",
-        data: credentials
+export function fetchUsers() {
+  return (dispatch, getState, { getFirestore }) => {
+    const fireStore = getFirestore();
+    fireStore
+      .get({
+        collection: "users"
       })
       .then(response => {
-        return dispatch(signUpSuccess(response.data));
+        dispatch(Success(response));
       })
-      //signIn user after signup
+      .catch(error => {
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
+  };
+}
+
+export function deleteUser(user) {
+  return (dispatch, getState, { getFirestore }) => {
+    const fireStore = getFirestore();
+    fireStore
+      .delete({ collection: "users", doc: user.id })
+      .then(resp => {
+        return console.log(resp);
+      })
+      .then(response => {
+        dispatch(Success(response));
+      })
+      .catch(error => {
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
+  };
+}
+
+export const editUser = user => {
+  console.log(user);
+  return (dispatch, getState, { getFirestore }) => {
+    const fireStore = getFirestore();
+    fireStore
+      .update({ collection: "users", doc: user.id }, user)
+      .then(resp => {
+        return console.log(resp);
+      })
+      .then(response => {
+        dispatch(Success(response));
+      })
+      .catch(error => {
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
+  };
+};
+
+export const signUpUser = user => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const fireStore = getFirestore();
+    let userID = null;
+    let lang = getState().language.language;
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(user.email, user.password)
+      .then(resp => {
+        userID = resp.user.uid;
+        console.log(lang);
+        firebase.auth().languageCode = lang;
+      })
       .then(() => {
-        return dispatch(signInUser(user));
+        firebase.auth().currentUser.sendEmailVerification();
       })
-
-      .catch(error => {
-        return dispatch(signUpFailure(error));
-      });
-  };
-}
-
-export function signInUser(user) {
-  let userEmail = user.email;
-  let userPassword = user.password;
-  let credentials = {
-    email: userEmail,
-    password: userPassword
-  };
-  return dispatch => {
-    axios
-      .request({
-        method: "post",
-        url: loopBack + "/blogusers/login?include=user",
-        data: credentials
+      .then(() => {
+        fireStore
+          .collection("users")
+          .doc(userID)
+          .set({
+            userName: user.userName,
+            privilege: "user",
+            id: userID,
+            userEmail: user.email
+          });
       })
       .then(response => {
-        //sets user data to local storage
-        localStorage.setItem("id", response.data.id);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("userName", response.data.user.userName);
-        localStorage.setItem("email", response.data.user.email);
-        return dispatch(signInSuccess(response.data));
+        dispatch(Success(response));
       })
       .catch(error => {
-        return dispatch(signInFailure(error));
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
       });
   };
-}
+};
 
-//if session information is lost it gets data from localstorage and set user data
-export function setToken() {
-   return dispatch => {
-    let id = localStorage.getItem("id");
-    let userId = localStorage.getItem("userId");
-    let userName = localStorage.getItem("userName");
-    let email = localStorage.getItem("email");
-    let user = { id, userId, user: { email, userName } };
-    return dispatch(signInSuccess(user));
+export const signInUser = user => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(user.email, user.password)
+      .then(response => {
+        console.log(response);
+        if (response.user.emailVerified === true) {
+          firestore.get({
+            collection: "users",
+            doc: response.user.uid,
+            storeAs: "user"
+          });
+          return dispatch(Success(response));
+        } else {
+          let ErrorMessage = errorMessage({code:"emailNotVerified"}, getState);
+          dispatch(Failure(ErrorMessage));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
   };
-}
+};
 
 export function logOut() {
-  
-  return (dispatch,getState) => {
-    const token = getState().users.user.id;
-    axios
-      .request({
-        method: "post",
-        url: loopBack + "/blogusers/logout?access_token=" + token
-      })
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signOut()
       .then(() => {
-          //sets user data to local storage
-          localStorage.clear();
-        return dispatch(logOutSuccess(token));
+        return dispatch({
+          type: actionTypes.CLEAR_DATA,
+          preserve: {
+            data: ["articles", "messages"],
+            ordered: ["articles", "messages"]
+          }
+        });
+      })
+      .then(response => {
+        dispatch(Success(response));
       })
       .catch(error => {
-        return dispatch(logOutFailure(error));
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
+  };
+}
+
+export function resetPassword(email) {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    console.log(email);
+    const firebase = getFirebase();
+    let auth = firebase.auth();
+    let lang = getState().language.language;
+    firebase.auth().languageCode = lang;
+    auth
+      .sendPasswordResetEmail(email.email)
+      .then(function(response) {
+        console.log("email send", email.email);
+        dispatch(Success(response));
+      })
+      .catch(function(error) {
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
+      });
+  };
+}
+
+export function changePassword(User) {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    let user = firebase.auth().currentUser;
+    let email = user.email;
+    console.log(user);
+    let password = User.oldPassword;
+    let newPassword = User.newPassword;
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        user.updatePassword(newPassword);
+      })
+      .then(function() {
+        dispatch(Success());
+        console.log("passwordUpdated");
+      })
+      .catch(function(error) {
+        let ErrorMessage = errorMessage(error, getState);
+        dispatch(Failure(ErrorMessage));
+        return console.log(ErrorMessage);
       });
   };
 }

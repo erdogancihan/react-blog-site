@@ -1,5 +1,5 @@
 .footer {
-  background-color: $primary-text;
+  background-color: $primary-bg;
   color: $footer-primary-side;
   .footer-container {
     max-width: 800px;
@@ -11,13 +11,14 @@
     margin: 2em auto;
     margin-bottom: 0em;
     padding: 2em;
-   
+  }
+  .archive-list {
+    border-top: 1px solid $footer-border !important;
   }
   a {
     color: $footer-primary-side !important;
     &:hover {
-      color:  $footer-primary-side-hover !important;
-      font-weight: 600;
+      color: $footer-primary-side-hover !important;
       cursor: pointer;
     }
   }
@@ -32,13 +33,8 @@
     }
     ul {
       li {
-        color: $footer-secondary-side;
-
-        &:hover {
-          color: $footer-secondary-side-hover;
-        }
         .article-list {
-          border-top: 1px solid #888;
+          border-top: 1px solid $footer-border;
         }
         .article-list-date {
           color: $footer-primary-side;
@@ -48,24 +44,16 @@
     }
 
     .th-archive {
-      color: $footer-secondary-side;
-      border-top: 1px solid #888;
-    }
-    .td-archive {
-      color: $footer-secondary-side;
-
-      &:hover {
-        color: $footer-secondary-side-hover;
-      }
+      color: $footer-primary-side;
+      border-top: 1px solid $footer-border;
     }
   }
   .contact {
-    background-color: #222;
-    border-top: 3px solid #888;
+    background-color: $secondary-bg;
+    border-top: 2px solid $footer-border;
     padding: 1em;
-    p{
-      padding:0.2em 0;
+    p {
+      padding: 0.2em 0;
     }
-   
   }
 }

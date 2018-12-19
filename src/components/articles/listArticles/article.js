@@ -14,9 +14,9 @@ class article extends Component {
     viewMessageId: ""
   };
   render() {
-    const { article, handleDelete, user, strings } = this.props;
+    const { article,auth, handleDelete, user, strings } = this.props;
 
- 
+ //expends or collapses the selected article
     const viewContent = id => {
       if (this.state.togleview) {
         this.setState({
@@ -39,14 +39,15 @@ class article extends Component {
     return (
       <div className="article-container">
         <div className="article-title">
-          {" "}
-          <h2
+          <Link to={"/article"+article.id}>
+          <h1
             onClick={() => {
               viewContent(article.id);
             }}
           >
             {article.title}
-          </h2>
+          </h1>
+          </Link>
         </div>
         <div className="flex-container">
           <div className="article-author">
@@ -70,9 +71,9 @@ class article extends Component {
           id={`article-content${article.key}`}
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
-        <div className="article-author">
+        <div className="keywords">
           <p>
-            <i className="fas fa-key" /> Key Words: <i>{article.keyWords}</i>{" "}
+            <i className="fas fa-key" /> Keywords: <i>{article.keyWords}</i>{" "}
           </p>
         </div>
         <div className="flex-container">
@@ -85,7 +86,8 @@ class article extends Component {
             <i>{strings.strings.articles.readMore}</i> <span> </span>{" "}
             <i className="fas fa-arrow-right" />
           </div>
-          {user.userId === article.authorId || user.userId === "2" ? (
+          {//if logged in user is admin or author of the article edit and delete buttons are visible            
+            auth.uid === article.authorId || (user&&user.privilege === "admin" )? (
             <React.Fragment>
               <div className={this.state.classNameAdmin}>
                 <Link to={"/add" + article.id}>

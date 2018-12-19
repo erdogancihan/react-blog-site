@@ -1,13 +1,15 @@
-import {combineReducers} from "redux";
-import articles from "./articlesReducer"
-import messages from "./messagesReducer"
+import { combineReducers } from "redux";
+import views from "./viewsReducer";
+import language from "./languageReducer";
+import { firestoreReducer } from "redux-firestore";
+import { firebaseReducer } from "react-redux-firebase";
 import users from "./usersReducer";
-import language from "./languageReducer"
 
-const rootReducer=combineReducers({
-    articles,
-    messages,
-    users,
-    language
-})
+const rootReducer = combineReducers({
+  language,
+  views,
+  users,
+  firestore: firestoreReducer,
+  firebase: firebaseReducer
+});
 export default rootReducer;

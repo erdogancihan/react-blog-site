@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
 import Category from "./category";
 import { showArticle } from "../../store/actions/articlesActionCreator";
 
@@ -8,7 +10,7 @@ class CategoriesContainer extends Component {
     toggleDrop: 0
   };
   render() {
-    const { articles, showArticle,strings } = this.props;
+    const { articles, showArticle, strings, toggleClass } = this.props;
     let rows = [];
     let categoryCount = {};
 
@@ -22,11 +24,11 @@ class CategoriesContainer extends Component {
       };
       showArticle(view);
     };
+
     //Handles dopdown Menu
     const dropdownContent = document.getElementById("dropdownContent");
     const handleDropdown = () => {
-     
-            if (this.state.toggleDrop === 0) {
+      if (this.state.toggleDrop === 0) {
         this.setState(
           {
             ...this.state,
@@ -43,9 +45,11 @@ class CategoriesContainer extends Component {
           dropdownContent.setAttribute("class", "dropdown-content")
         );
       }
+      return;
     };
-
-    const collapse=()=>{
+    /*
+    const collapse = e => {
+      e.preventDefault();
       this.setState(
         {
           ...this.state,
@@ -53,13 +57,14 @@ class CategoriesContainer extends Component {
         },
         dropdownContent.setAttribute("class", "dropdown-content")
       );
-    }
-
+    };
+*/
     //gets the count of articles according to  category
-    articles.map(article => {
-      return (categoryCount[article.category] =
-        (categoryCount[article.category] || 0) + 1);
-    });
+    articles &&
+      articles.map(article => {
+        return (categoryCount[article.category] =
+          (categoryCount[article.category] || 0) + 1);
+      });
     var countsArray = [];
 
     for (let [key, value] of Object.entries(categoryCount)) {
@@ -76,15 +81,20 @@ class CategoriesContainer extends Component {
           handleShowArticle={handleShowArticle}
           handleDropdown={handleDropdown}
           categoryCount={Object.values(category)[0]}
+          toggleClass={toggleClass}
         />
       );
+      return null;
     });
-
     return (
-      <div className="nav-link dropdown"  tabIndex="0" onBlur={collapse}>
-        <h4 onClick={handleDropdown}>{strings.navbar.categories} <i className="fas fa-sort-down"></i></h4>
+      <div className="nav-link dropdown" tabIndex="0">
+        <h4 onClick={handleDropdown}>
+          {strings.navbar.categories} <i className="fas fa-sort-down" />
+        </h4>
         <div className="dropdown-content" id="dropdownContent">
-          <ul className="category">{rows}</ul>
+          <ul className="category">
+            <Link to="/">{rows}</Link>
+          </ul>
         </div>
       </div>
     );
@@ -93,7 +103,7 @@ class CategoriesContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    articles: state.articles.articles
+    articles: state.firestore.ordered.articles
   };
 };
 const mapDispatchToProps = dispatch => {

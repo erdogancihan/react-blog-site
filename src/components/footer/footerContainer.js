@@ -10,10 +10,9 @@ export class FooterContainer extends Component {
     return (
       <div className="footer">
         <div className="footer-container">
-        
           <LastArticles />
           <SidenavArchives />
-          <CategoriesContainer/>
+          <CategoriesContainer />
         </div>
         <Contact />
       </div>

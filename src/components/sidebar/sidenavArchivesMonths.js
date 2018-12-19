@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 class sidenavArchievesMonths extends Component {
   render() {
@@ -32,7 +33,7 @@ class sidenavArchievesMonths extends Component {
                 handleShowArticle(year + "/" + month);
               }}
             >
-              {monthOfYear + " (" + count + ")"}
+              <Link to="/">{monthOfYear + " (" + count + ")"}</Link>
             </div>
           </td>
         </tr>

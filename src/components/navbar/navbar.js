@@ -1,28 +1,82 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import CookieConsent from "react-cookie-consent";
+import PropTypes from "prop-types";
+
 import { showArticle } from "../../store/actions/articlesActionCreator";
-import { setToken, logOut } from "../../store/actions/usersActionCreator";
+import { logOut } from "../../store/actions/usersActionCreator";
 import CategoriesContainer from "./categoriesContainer";
 import LoggedIn from "./loggedIn";
 import Admin from "./admin";
+import PowerUser from "./powerUser";
 import LoggedOut from "./loggedOut";
 
 export class Navbar extends Component {
-  state = {};
-  componentDidMount() {
-    //console.log(this.props.user);
-    if (!this.props.user.user.id) {
-      this.props.setToken();
-    }
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
 
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  };
+
+  componentDidMount() {
+    const { firestore, firebase, FirebaseAuth } = this.context.store;
+    const auth = this.props.auth;
+    const authListener = firebase.auth();
+
+    authListener.onAuthStateChanged(function(user) {
+      if (user) {
+       // alert(user.uid, user.emailVerified.toString());
+        if (auth.uid && auth.emailVerified === true) {
+          firestore.get({
+            collection: "users",
+            doc: auth.uid,
+            storeAs: "user"
+          });
+        }
+      }
+    });
+    console.log(authListener);
+
+    
+  }
+  /*
+  componentDidUpdate() {
+    const { firestore, firebase } = this.context.store;
+    const auth = this.props.auth;
+    console.log(this.props)
+    const props=this.props
+    console.log(props)
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        console.log(props)
+        if (!props.user)
+          if (auth.emailVerified === true) {
+            firestore.get({
+              collection: "users",
+              doc: auth.uid,
+              storeAs: "user"
+            });
+          }
+      } else {
+        // No user is signed in.
+      }
+    });
+  }
+*/
   render() {
-   const {logOut,strings}=this.props;
+    const { logOut, strings, auth, user } = this.props;
     const LogOut = () => {
       console.log("logout");
-      this.props.logOut();
+      logOut();
     };
+
     const handleShowArticle = () => {
       let view = {
         single: "",
@@ -31,38 +85,70 @@ export class Navbar extends Component {
       };
       this.props.showArticle(view);
     };
-const toggleClass=()=>{
-  const navs = document.querySelectorAll('.navbar-items');
-  navs.forEach(nav => nav.classList.toggle('navbar-toggleShow'));
-}
+
+    const toggleClass = () => {
+      const navs = document.querySelectorAll(".navbar-items");
+      navs.forEach(nav => nav.classList.toggle("navbar-toggleShow"));
+    };
+
     return (
       <div className="navbar">
+        <CookieConsent>
+          This website uses cookies to enhance the user experience.
+        </CookieConsent>
         <div className="nav-link navbar-brand" onClick={handleShowArticle}>
-          <Link to="/">My Blog Site</Link>
+          <Link to="/">FLOPPY HOME</Link>
         </div>
         <div className="nav-link nav-link-toggle" onClick={toggleClass}>
-      <i className="fas fa-bars"></i>
-    </div>
+          <i className="fas fa-bars" />
+        </div>
         <nav className="navbar-items">
           <div className="nav-link">
-            <Link to="/about">{strings.navbar.about}</Link>
+            <Link to="/about" onClick={toggleClass}>
+              {strings.navbar.about}
+            </Link>
+          </div>
+          <div className="nav-link">
+            <Link to="/terms" onClick={toggleClass}>
+              {strings.navbar.terms}
+            </Link>
+          </div>
+          <div className="nav-link">
+            <CategoriesContainer strings={strings} toggleClass={toggleClass} />
           </div>
         </nav>
 
         <nav className="navbar-items navbar-items-right">
-          <div className="nav-link">
-            {" "}
-            <CategoriesContainer strings={strings} />
-          </div>
-          {!this.props.user.user.id ? (
-            <LoggedOut strings={strings}/>
-          ) : this.props.user.user.userId == "2" ? (
+          <div className="nav-link"> </div>
+          {!user ? (
+            <LoggedOut strings={strings} toggleClass={toggleClass} />
+          ) : user.privilege === "admin" ? (
             <React.Fragment>
-              <Admin strings={strings}/>
-              <LoggedIn user={this.props.user.user} LogOut={LogOut}strings={strings} />
+              <Admin strings={strings} toggleClass={toggleClass} />
+              <LoggedIn
+                user={user}
+                LogOut={LogOut}
+                strings={strings}
+                toggleClass={toggleClass}
+              />
+            </React.Fragment>
+          ) : user.privilege === "powerUser" ? (
+            <React.Fragment>
+              <PowerUser strings={strings} toggleClass={toggleClass} />
+              <LoggedIn
+                user={user}
+                LogOut={LogOut}
+                strings={strings}
+                toggleClass={toggleClass}
+              />
             </React.Fragment>
           ) : (
-            <LoggedIn user={this.props.user.user} LogOut={LogOut}strings={strings} />
+            <LoggedIn
+              user={user}
+              LogOut={LogOut}
+              strings={strings}
+              toggleClass={toggleClass}
+            />
           )}
         </nav>
       </div>
@@ -71,21 +157,26 @@ const toggleClass=()=>{
 }
 
 const mapStateToProps = state => {
-  //  console.log(state);
+  console.log(state);
   return {
-    user: state.users,
-    strings:state.language.strings
+    language: state.language.language,
+    user: state.firestore.data.user,
+    strings: state.language.strings,
+    auth: state.firebase.auth
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     showArticle: id => dispatch(showArticle(id)),
-    setToken: () => dispatch(setToken()),
     logOut: () => dispatch(logOut())
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect()
 )(Navbar);

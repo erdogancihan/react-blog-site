@@ -3,21 +3,28 @@
 }
 
 .article-title {
-  h2 {
-    color: #000;
-    margin-bottom: 1em;
+  h1 {
+    color: $primary-text;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
     cursor: pointer;
   }
 }
 .article-author {
   p {
-    color: #888;
-    margin-bottom: 0em ;
+    color: $secondary-text;
+    margin-bottom: 1em;
+  }
+}
+.keywords {
+  p {
+    color: $secondary-text;
+    margin-top: 0.5em;
   }
 }
 .article-date {
   p {
-    color: #888;
+    color: $secondary-text;
     margin-bottom: 0em;
   }
 }
@@ -25,11 +32,11 @@
 .article-container {
   padding: 1em 2em;
   margin-top: 0.5em;
-  box-shadow: 5px 5px 5px#ddd;
-  border-left: 1px solid #eee;
-  border-top: 1px solid #eee;
-  p{
-    margin-bottom:0.3em;
+  box-shadow: 5px 5px 10px $box-shadow;
+  border-left: 1px solid $border-left-top;
+  border-top: 1px solid $border-left-top;
+  p {
+    margin-bottom: 0.3em;
   }
 }
 .article-content {
@@ -38,7 +45,7 @@
   text-align: justify;
   line-height: 1.7em;
   max-height: 5.1em;
-  color: #454545;
+  color: $primary-text;
   margin-right: -1em;
   padding-right: 1em;
   z-index: 0;
@@ -46,9 +53,8 @@
     max-width: 100%;
     height: auto;
   }
-
 }
-.hide{
+.hide {
   display: none;
 }
 
@@ -67,11 +73,11 @@
   margin-top: 0.2em;
 }
 .article-content-visible {
-  overflow: hidden;
+  overflow-x:auto;
   position: relative;
   text-align: left;
   line-height: 1.7em;
-  color: #454545;
+  color: $primary-text;
   margin-right: -1em;
   padding-right: 1em;
   z-index: 0;
@@ -80,8 +86,20 @@
     max-width: 100%;
     height: auto;
   }
-  p{
-    margin-bottom: 1.2em ;
+  p {
+    margin-bottom: 1.2em;
+  }
+  table{
+    max-width: 100% !important;
+    border: 1px solid black;
+    border-collapse: collapse;
+    overflow:hidden;
+    th {
+      text-align: left;
+    }
+    td {
+       vertical-align: bottom;
+    }
   }
 }
 .readMore {
@@ -91,7 +109,7 @@
     color: $primary-text;
     &:hover {
       color: $primary-text-hover;
-      font-weight: 600;
+      font-weight: 500;
     }
   }
 }
@@ -120,7 +138,17 @@
       margin-bottom: 0.5em;
       color: $primary-text;
     }
-    select{
+    textarea {
+      border-radius: 15px;
+      height: 7em;
+      width: 100%;
+      outline: none;
+      padding: 0.5em 0.5em;
+      margin-bottom: 0.5em;
+      color: $primary-text;
+      border: 1px solid $primary-bg;
+    }
+    select {
       border-radius: 15px;
       height: 2.5em;
       width: 100%;
@@ -128,6 +156,7 @@
       padding: 0 0.5em;
       margin-bottom: 0.5em;
       color: $primary-text;
+      border: 1px solid $primary-bg;
     }
     .button {
       margin: 1em 0;
@@ -136,7 +165,7 @@
       width: 100px;
       outline: none;
       color: $primary-text;
-      background-color: #eee;
+      background-color: $body-bg;
       font-size: 1em;
     }
   }

@@ -2,10 +2,12 @@ import React from "react";
 import Message from "./message";
 import SendMessage from "./sendMessage";
 
-const ListMessages = ({ messages, articleId, handleDelete, user, strings }) => {
+const ListMessages = ({ messages,auth, articleId, handleDelete, user, strings }) => {
+  //console.log(user)
   return (
     <div>
-      {messages.messages.map(message => {
+      {//shows messages according to correspanding article.
+     messages && messages.map(message => {
         if (message.articleId === articleId.toString()) {
           return (
             <Message
@@ -13,14 +15,17 @@ const ListMessages = ({ messages, articleId, handleDelete, user, strings }) => {
               message={message}
               handleDelete={handleDelete}
               user={user}
+              auth={auth}
               strings={strings}
             />
           );
         }
         return null;
       })}
-
-      <SendMessage articleId={articleId} strings={strings} />
+      {//if user is not logged in send message component is unvisible.
+      auth.uid ? (
+        <SendMessage articleId={articleId} strings={strings} />
+      ) : null}
     </div>
   );
 };
