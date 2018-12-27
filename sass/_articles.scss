@@ -6,24 +6,26 @@
   h1 {
     color: $primary-text;
     margin-bottom: 0.5em;
-    margin-top: 1em;
+    margin-top: 0;
     cursor: pointer;
   }
 }
 .article-author {
   p {
     color: $secondary-text;
-    margin-bottom: 1em;
+    padding-bottom: 1em;
   }
 }
 .keywords {
   p {
+    font-size: 0.9em;
     color: $secondary-text;
     margin-top: 0.5em;
   }
 }
 .article-date {
   p {
+    font-size: 0.9em;
     color: $secondary-text;
     margin-bottom: 0em;
   }
@@ -33,18 +35,21 @@
   padding: 1em 2em;
   margin-top: 0.5em;
   box-shadow: 5px 5px 10px $box-shadow;
+  border-radius: 10px;
   border-left: 1px solid $border-left-top;
   border-top: 1px solid $border-left-top;
+  background-color: lighten($color: $body-bg, $amount: 3);
   p {
     margin-bottom: 0.3em;
   }
 }
 .article-content {
+  
   overflow: hidden;
   position: relative;
   text-align: justify;
-  line-height: 1.7em;
-  max-height: 5.1em;
+  line-height: 1.5em;
+  max-height: 10.1em;
   color: $primary-text;
   margin-right: -1em;
   padding-right: 1em;

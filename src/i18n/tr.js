@@ -81,7 +81,7 @@ export default {
     maximumUserCountExceeded:"Maksimum kullanıcı sayısı aşıldı.",
     emailAlreadyExists:"Girdiğiniz Eposta adresi başka bir kullanıcı tarafından kullanıyor. Her kullanıcının benzersiz bir Eposta adresi olması gerekir.",
     userNotFound:"Girdiğiniz kullanıcı adı ile eşleşen kayıtlı bir kullanıcı bulunmamaktadır.",
-    internalError:"Kimlik doğrulama sunusunda tanımlanamyan bir hata oluştu.",
+    internalError:"Kimlik doğrulama sunucusunda tanımlanamyan bir hata oluştu.",
     authNetworkRequestFailed:"Ağ hatası (zaman aşımı, bağlantıda kesiklik veya ulaşılamayan sunucu) oluştu.",
     wrongPassword:"Şifre hatalı",
     emailAlreadyInUse:"Eposta adresi başka bir kullanıcı tarafından kullanılmaktadır.",

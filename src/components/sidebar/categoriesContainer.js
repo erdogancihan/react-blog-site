@@ -52,9 +52,9 @@ class CategoriesContainer extends Component {
             <i className="fas fa-list-ul" /> <span> </span>{" "}
             {strings.sidebar.categories}
           </h4>
-          <div className="dropdown-content-side" id="dropdownContent">
+        
             <ul className="category-side">{rows}</ul>
-          </div>
+          
         </div>
       </div>
     );

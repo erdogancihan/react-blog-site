@@ -25,14 +25,7 @@ class ArticleContainer extends Component {
       storeAs: "article"
     });
   }
-  componentDidUpdate() {
-    const { firestore } = this.context.store;
-    firestore.get({
-      collection: "articles",
-      doc: this.props.match.params.id,
-      storeAs: "article"
-    });
-  }
+
 
   //deletes article
   handleDelete = article => {

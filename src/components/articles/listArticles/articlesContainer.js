@@ -26,14 +26,14 @@ class ArticlesContainer extends Component {
 
   componentDidMount() {
     const { firestore} = this.context.store;
-    console.log(this.props.language)
+   // console.log(this.props.language)
     firestore.get({
       collection: "articles",
       where: ["language", "==", this.props.language],
       orderBy: ["date", "desc"]
     });
     //it sets first five articles to the state
-    console.log(this.props.articles);
+   // console.log(this.props.articles);
     if (this.props.articles) {
       if (this.props.view.all === true) {
         return this.setState({
@@ -85,7 +85,7 @@ class ArticlesContainer extends Component {
 
   componentDidUpdate(previousProps, previousState) {
     if (previousProps.language !== this.props.language) {
-      console.log(this.props.language)
+      //console.log(this.props.language)
       const { firestore } = this.context.store;
       firestore.get({
         collection: "articles",

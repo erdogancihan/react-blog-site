@@ -5,7 +5,7 @@ const Category = ({ category, categoryCount, handleShowArticle }) => {
   return (
     <li>
       <div
-        className="archive-list"
+        className="article-list"
         onClick={() => {
           handleShowArticle(category);
         }}

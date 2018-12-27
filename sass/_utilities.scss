@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans");
-/*
+
 //colors
-$body-bg: #fff; //body color
+$body-bg: #e6fdfa; //body color
 $primary-bg: #454545; //navbar and footer background color.
 $secondary-bg: #707070; //footer down color
 
@@ -17,7 +17,7 @@ $footer-primary-side: $primary-text-light; //footer texts.
 $footer-primary-side-hover: $primary-text-light-hover; //footer texts hover.
 $footer-border:$footer-primary-side; //footer border
 
-*/
+
 /*
 //colors
 $body-bg: #fff; //body color
@@ -36,23 +36,24 @@ $footer-primary-side: $primary-text-light; //footer texts.
 $footer-primary-side-hover: $primary-text-light-hover; //footer texts hover.
 $footer-border:$footer-primary-side; //footer border
 */
+/*
 //colors
-$body-bg: #e8f1ef; //body color
+$body-bg: #fefffe; //body color
 $primary-bg: #75aa44; //navbar and footer background color.
 $secondary-bg: #024b00; //footer down color
 
 $border-left-top: transparentize($secondary-bg, 0.8);
 $box-shadow: transparentize($secondary-bg, 0.8);
 
-$primary-text: #264e00; //article content and title, sidebarlinks text, about and terms text/login labels text/buttons text
+$primary-text: #193300; //article content and title, sidebarlinks text, about and terms text/login labels text/buttons text
 $primary-text-hover:darken(saturate($primary-text,10),20); //links
 $primary-text-light: #e0e0e0; //navbar links text/
 $primary-text-light-hover: lighten($primary-text-light,50); //navbar links text/
-$secondary-text: #3a9742; // article author,date,keywords,
+$secondary-text: #156d1c; // article author,date,keywords,
 $footer-primary-side: $primary-text-light; //footer texts.
 $footer-primary-side-hover: $primary-text-light-hover; //footer texts hover.
 $footer-border:$footer-primary-side; //footer border
-
+*/
 
 * {
   margin: 0;

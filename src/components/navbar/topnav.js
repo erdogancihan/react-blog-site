@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { setLanguage, getLanguage } from "../../store/actions/languagesActionCreator";
+import {
+  setLanguage,
+  getLanguage
+} from "../../store/actions/languagesActionCreator";
 import { showArticle } from "../../store/actions/articlesActionCreator";
 
 export class Topnav extends Component {
@@ -13,9 +16,9 @@ export class Topnav extends Component {
     this.props.setLanguage(lang);
     this.props.getLanguage();
   }
-  
+
   //dispatches an action to change the language.
-   handleSetLang = e => {
+  handleSetLang = e => {
     const lang = e.target.id;
     let view = {
       single: "",
@@ -24,12 +27,11 @@ export class Topnav extends Component {
       category: ""
     };
     this.props.setLanguage(lang);
-     //views all articles by that language.
+    //views all articles by that language.
     this.props.showArticle(view);
   };
   componentDidUpdate() {
-
-    //changes the class of the selected item 
+    //changes the class of the selected item
     let active = this.props.language.language;
     switch (active) {
       case "tr":
@@ -52,25 +54,20 @@ export class Topnav extends Component {
     }
   }
   render() {
-
     return (
       <div className="topnav">
         <ul className="nav" id="languageUl">
-          <Link to="/">
-            <li className="nav-item" id="tr" onClick={this.handleSetLang}>
-              tr
-            </li>
-          </Link>
-          <Link to="/">
-            <li className="nav-item" id="de" onClick={this.handleSetLang}>
-              de
-            </li>
-          </Link>
-          <Link to="/">
-            <li className="nav-item" id="en" onClick={this.handleSetLang}>
-              en
-            </li>
-          </Link>
+          <li className="nav-item" id="tr" onClick={this.handleSetLang}>
+            tr
+          </li>
+
+          <li className="nav-item" id="de" onClick={this.handleSetLang}>
+            de
+          </li>
+
+          <li className="nav-item" id="en" onClick={this.handleSetLang}>
+            en
+          </li>
         </ul>
       </div>
     );
@@ -84,7 +81,7 @@ const mapStateToProps = state => {
 const mapDispatchToprops = dispatch => {
   return {
     setLanguage: lang => dispatch(setLanguage(lang)),
-    getLanguage: ()=> dispatch(getLanguage()),
+    getLanguage: () => dispatch(getLanguage()),
     showArticle: view => dispatch(showArticle(view))
   };
 };

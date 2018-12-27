@@ -16,7 +16,7 @@ const Message = ({ message, auth, handleDelete, user, strings }) => {
       auth.uid == message.authorId || (user && user.privilege === "admin") ? (
         <div className="user-only" onClick={() => handleDelete(message)}>
           <div className="delete-button">
-            <i>{strings.common.delete}</i>{" "}
+          <i className="far fa-trash-alt" />  <i>{strings.common.delete}</i>{" "}
           </div>
         </div>
       ) : null}

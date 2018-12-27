@@ -21,30 +21,32 @@
 
 .category-side {
   list-style: none;
+  .archieve-list{
+    border-top: 1px solid $border-left-top;
+  }
+
 }
 
 .dropdown-content-side {
   display: flex;
-
+  
   li {
     text-align: left;
     padding: 0.3em 1em;
    
+  
     font-size: 0.9em;
 
     &:hover {
       font-weight: 400;
       cursor: pointer;
     }
-    .archive-list {
-      width: 150px;
-      border-top: 1px solid $border-left-top;
-    }
+    
   }
 }
 
 .sidebar {
-  //border: 1px solid blue;
+ // border: 1px solid blue;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -52,6 +54,7 @@
   align-items: stretch;
   margin: 0;
   padding: 0;
+  
 }
 .sidenav-header {
   font-weight: 600 !important;
@@ -62,20 +65,23 @@
   border-left: 1px solid $border-left-top;
   border-top: 1px solid $border-left-top;
   box-shadow: 5px 5px 5px $box-shadow;
+  border-radius: 10px;
   text-align: left;
+  background-color: lighten($color: $body-bg, $amount: 3);
  
   h4 {
     padding: 0.5em 1em;
   }
+  
   ul {
     list-style: none;
-
+  
     li {
       text-align: left;
       padding: 0.3em 1em;
       color: $primary-text;
       font-size: 0.9em;
-
+    
       &:hover {
         font-weight: 400;
         cursor: pointer;

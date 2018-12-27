@@ -41,7 +41,7 @@ export class Navbar extends Component {
         }
       }
     });
-    console.log(authListener);
+    //console.log(authListener);
 
     
   }
@@ -157,7 +157,7 @@ export class Navbar extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+
   return {
     language: state.language.language,
     user: state.firestore.data.user,

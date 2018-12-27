@@ -5,10 +5,7 @@ import { showArticle } from "../../store/actions/articlesActionCreator";
 import LastArticle from "./lastArticle";
 
 const LastArticles = ({ articles, showArticle, strings }) => {
-  console.log(articles)
-  
-
-  const handleShowArticle = id => {
+   const handleShowArticle = id => {
     let view = {
       single: id,
       all: false,
