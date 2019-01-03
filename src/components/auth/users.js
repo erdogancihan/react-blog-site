@@ -50,7 +50,7 @@ export class Users extends Component {
                     handleEditUser={editUser}
                   />
                 );
-                return null;
+               
               })}
           </tbody>
         </table>

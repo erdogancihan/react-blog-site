@@ -8,14 +8,14 @@ import Contact from "./contact";
 export class FooterContainer extends Component {
   render() {
     return (
-      <div className="footer">
+      <footer>
         <div className="footer-container">
           <LastArticles />
           <SidenavArchives />
           <CategoriesContainer />
         </div>
         <Contact />
-      </div>
+      </footer>
     );
   }
 }

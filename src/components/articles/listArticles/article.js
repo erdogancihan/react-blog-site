@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-
 import MessagesContainer from "../messages/messagesContainer";
 
 class article extends Component {
@@ -14,9 +13,9 @@ class article extends Component {
     viewMessageId: ""
   };
   render() {
-    const { article,auth, handleDelete, user, strings } = this.props;
+    const { article, auth, handleDelete, user, strings } = this.props;
 
- //expends or collapses the selected article
+    //expends or collapses the selected article
     const viewContent = id => {
       if (this.state.togleview) {
         this.setState({
@@ -37,33 +36,28 @@ class article extends Component {
       }
     };
     return (
-      <div className="article-container">
-        <div className="article-title">
-          <Link to={"/article"+article.id}>
-          <h1
-            onClick={() => {
-              viewContent(article.id);
-            }}
-          >
-            {article.title}
-          </h1>
-          </Link>
-        </div>
+      <article className="article-container">
+        <header>
+          <div className="article-title">
+            <Link to={"/article" + article.id}>
+              <h1
+                onClick={() => {
+                  viewContent(article.id);
+                }}
+              >
+                {article.title}
+              </h1>
+            </Link>
+          </div>
+        </header>
         <div className="flex-container">
-          <div className="article-author">
-            {" "}
-            <p>
-              <i className="fas fa-pencil-alt" /> <span> </span>{" "}
-              {article.author}{" "}
-            </p>
-          </div>
-          <div className="article-date">
-            {" "}
-            <p>
-              <i className="far fa-calendar-alt" />
-              <span> </span> {moment(article.date).format("ll")}
-            </p>
-          </div>
+          <p className="article-author">
+            <i className="fas fa-pencil-alt" /> <span> </span> {article.author}{" "}
+          </p>
+          <p className="article-date">
+            <i className="far fa-calendar-alt" />
+            <span> </span> {moment(article.date).format("ll")}
+          </p>
         </div>
 
         <div
@@ -71,11 +65,9 @@ class article extends Component {
           id={`article-content${article.key}`}
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
-        <div className="keywords">
-          <p>
-            <i className="fas fa-key" /> Keywords: <i>{article.keyWords}</i>{" "}
-          </p>
-        </div>
+        <p className="keywords">
+          <i className="fas fa-key" /> Keywords: <i>{article.keyWords}</i>{" "}
+        </p>
         <div className="flex-container">
           <div
             className={this.state.classNameButton}
@@ -86,8 +78,9 @@ class article extends Component {
             <i>{strings.strings.articles.readMore}</i> <span> </span>{" "}
             <i className="fas fa-arrow-right" />
           </div>
-          {//if logged in user is admin or author of the article edit and delete buttons are visible            
-            auth.uid === article.authorId || (user&&user.privilege === "admin" )? (
+          {//if logged in user is admin or author of the article edit and delete buttons are visible
+          auth.uid === article.authorId ||
+          (user && user.privilege === "admin") ? (
             <React.Fragment>
               <div className={this.state.classNameAdmin}>
                 <Link to={"/add" + article.id}>
@@ -110,7 +103,7 @@ class article extends Component {
             viewMessageId={this.state.viewMessageId}
           />
         </div>
-      </div>
+      </article>
     );
   }
 }

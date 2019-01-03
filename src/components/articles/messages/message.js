@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const Message = ({ message, auth, handleDelete, user, strings }) => {
   return (
     <div className="message">
-      <div className="message-content">{message.content}</div>
+      <p className="message-content">{message.content}</p>
       <p className="text-right">
         <i>
           {message.author}{" "}

@@ -30,11 +30,11 @@ class App extends Component {
           <Topnav />
           <Navbar />
 
-          <div className="main">
-            <div>
+          <section className="main">
+          
             <SidebarContainer/>
-            </div>
-            <div>
+           
+            <main>
               <Switch>
                 <Route exact path="/" component={ArticlesContainer} />
                 <Route path="/add:id" component={AddArticle} />
@@ -47,8 +47,8 @@ class App extends Component {
                 <Route path="/changepassword" component={ChangePassword} />
                
               </Switch>
-            </div>
-          </div>
+            </main>
+          </section>
           <FooterContainer />
         </div>
       </BrowserRouter>

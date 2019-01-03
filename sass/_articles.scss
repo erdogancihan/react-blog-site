@@ -40,7 +40,7 @@
   border-top: 1px solid $border-left-top;
   background-color: lighten($color: $body-bg, $amount: 3);
   p {
-    margin-bottom: 0.3em;
+    margin-bottom: 1em;
   }
 }
 .article-content {
@@ -49,14 +49,26 @@
   position: relative;
   text-align: justify;
   line-height: 1.5em;
-  max-height: 10.1em;
+  max-height: 10em;
   color: $primary-text;
   margin-right: -1em;
   padding-right: 1em;
   z-index: 0;
   img {
-    max-width: 100%;
+    max-width: 90%;
     height: auto;
+  }
+  table{
+    max-width: 90%;
+    overflow-x: hidden;
+    border-collapse: collapse;
+    
+    td {
+      height: 15em;
+      text-align: left;
+      vertical-align: bottom;
+      border-bottom: 1px solid $border-left-top;
+    }
   }
 }
 .hide {
@@ -88,22 +100,42 @@
   z-index: 0;
   max-height: initial;
   img {
-    max-width: 100%;
+    max-width: 90%;
     height: auto;
   }
+  a{
+    &:hover{
+      font-weight: 600;
+    }
+  }
   p {
-    margin-bottom: 1.2em;
+    margin-bottom: 1em;
+  }
+  h1 {
+    margin: 0.8em 0;
+  }
+  h2 {
+    margin: 0.8em 0;
+  }
+  h3 {
+    margin: 0.8em 0;
   }
   table{
-    max-width: 100% !important;
-    border: 1px solid black;
+    max-width: 90% !important;
+    border: 1px solid $border-left-top;
     border-collapse: collapse;
-    overflow:hidden;
+    overflow-x:hidden;
+    margin-bottom:1em;
     th {
+      vertical-align: bottom;
       text-align: left;
+      padding:0.8em 0.5em;
+      font-weight: 600;
     }
     td {
        vertical-align: bottom;
+       text-align: left;
+       padding:0.8em 0.5em;
     }
   }
 }

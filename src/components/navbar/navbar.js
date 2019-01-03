@@ -25,7 +25,7 @@ export class Navbar extends Component {
   };
 
   componentDidMount() {
-    const { firestore, firebase, FirebaseAuth } = this.context.store;
+    const { firestore, firebase} = this.context.store;
     const auth = this.props.auth;
     const authListener = firebase.auth();
 
@@ -71,7 +71,7 @@ export class Navbar extends Component {
   }
 */
   render() {
-    const { logOut, strings, auth, user } = this.props;
+    const { logOut, strings,  user } = this.props;
     const LogOut = () => {
       console.log("logout");
       logOut();
