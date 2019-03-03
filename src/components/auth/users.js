@@ -6,6 +6,7 @@ import { compose } from "redux";
 import { deleteUser, editUser } from "../../store/actions/usersActionCreator";
 import { clearAuthMessages } from "../../store/actions/usersActions";
 import User from "./user";
+import { auth } from "firebase";
 
 export class Users extends Component {
   constructor(props) {
@@ -20,14 +21,15 @@ export class Users extends Component {
     this.props.deleteUser(user);
   };
   handleEditUser = user => {
-    console.log(user);
-    this.props.editUser(user);
-  };
+    if(this.props.auth.isAdmin===true){
+      this.props.editUser(user);
+    }
+   };
 
   render() {
     const { users, deleteUser, editUser, activeUser } = this.props;
 
-    return activeUser && activeUser.privilege === "admin" ? (
+    return activeUser /*&& activeUser.privilege === "admin" */? (
       <div className="articles-container">
         <table className="users">
           <thead>
@@ -74,6 +76,7 @@ export class Users extends Component {
 }
 
 const mapStateToProps = state => {
+
   return {
     users: state.firestore.ordered.users,
     activeUser: state.firestore.data.user

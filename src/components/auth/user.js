@@ -31,7 +31,7 @@ class User extends Component {
     return (
       <tr>
         <td>{user.id}</td>
-        <td>{user.userEmail}</td>
+        <td>{user.email}</td>
         <td>{user.userName}</td>
         <td>
           <select

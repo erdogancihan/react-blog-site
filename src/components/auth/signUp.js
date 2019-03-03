@@ -72,7 +72,7 @@ const SignUp = props => {
             <br />
             <Link to="/terms">
               {" "}
-              <p className="text-center text-light">
+              <p className="text-center text-light toogle">
                 {strings.auth.userAgreement}
               </p>
             </Link>
@@ -82,7 +82,7 @@ const SignUp = props => {
           </div>
         </form>
       </div>
-      <div className="text-center text-light" id="message">
+      <div className="text-center text-light toogle" id="message">
         {strings.auth.allreadyMember}
         <span className="toogle" onClick={showSignin}>
           {strings.auth.login}
@@ -97,7 +97,7 @@ const SignUp = props => {
         {error.error!==false? (
           <div className="signup-message">
             <br />
-            <p className="text-center">{error.error}</p>
+            <p className="text-center error">{error.error}</p>
           </div>
         ) : null}
       </div>

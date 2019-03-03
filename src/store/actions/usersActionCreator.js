@@ -37,7 +37,7 @@ export function fetchUsers() {
   return (dispatch, getState, { getFirestore }) => {
     const fireStore = getFirestore();
     fireStore
-      .get({
+      .onSnapshot({
         collection: "users"
       })
       .then(response => {
@@ -70,7 +70,7 @@ export function deleteUser(user) {
   };
 }
 
-export const editUser = user => {
+/*export const editUser = user => {
   console.log(user);
   return (dispatch, getState, { getFirestore }) => {
     const fireStore = getFirestore();
@@ -87,6 +87,52 @@ export const editUser = user => {
         dispatch(Failure(ErrorMessage));
         return console.log(ErrorMessage);
       });
+  };
+};
+*/
+
+//edits custom claims
+export const editUser = user => {
+  user.email = user.userEmail;
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const fireStore = getFirestore();
+    const updateDatabase = () => {
+      fireStore
+        .update({ collection: "users", doc: user.id }, user)
+        .then(resp => {
+          return console.log(resp);
+        })
+        .then(response => {
+          dispatch(Success(response));
+        })
+        .catch(error => {
+          let ErrorMessage = errorMessage(error, getState);
+          dispatch(Failure(ErrorMessage));
+          return console.log(ErrorMessage);
+        });
+    };
+    if (user.privilege === "admin") {
+      const addAdminRole = firebase.functions().httpsCallable("addAdminRole");
+      addAdminRole(user).then(result => {
+        updateDatabase();
+        console.log(result);
+      });
+    } else if (user.privilege === "powerUser") {
+      const addPowerUserRole = firebase
+        .functions()
+        .httpsCallable("addPowerUserRole");
+      addPowerUserRole(user).then(result => {
+        updateDatabase();
+        console.log(result);
+      });
+    } else if (user.privilege === "user") {
+      const addUserRole = firebase.functions().httpsCallable("addUserRole");
+      addUserRole(user).then(result => {
+        updateDatabase();
+        console.log(result);
+      });
+    }
   };
 };
 
@@ -147,7 +193,10 @@ export const signInUser = user => {
           });
           return dispatch(Success(response));
         } else {
-          let ErrorMessage = errorMessage({code:"emailNotVerified"}, getState);
+          let ErrorMessage = errorMessage(
+            { code: "emailNotVerified" },
+            getState
+          );
           dispatch(Failure(ErrorMessage));
         }
       })

@@ -80,7 +80,7 @@ class article extends Component {
           </div>
           {//if logged in user is admin or author of the article edit and delete buttons are visible
           auth.uid === article.authorId ||
-          (user && user.privilege === "admin") ? (
+          (auth.isAdmin===true) ? (
             <React.Fragment>
               <div className={this.state.classNameAdmin}>
                 <Link to={"/add" + article.id}>

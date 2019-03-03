@@ -6,6 +6,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
+import "firebase/functions";
 import rootReducer from "../store/reducers/rootReducer";
 
 // Initialize Firebase
@@ -26,6 +27,9 @@ const rrfConfig = {
 
 // Initialize firebase instance
 firebase.initializeApp(fbConfig);
+
+// Initialize firebase functions
+firebase.functions()
 
 // Initialize Cloud Firestore through Firebase
 firebase.firestore().settings({ timestampsInSnapshots: true });

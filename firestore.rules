@@ -1,7 +1,20 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write;
-    }
+  //match articles
+  	match /articles/{articleId}{
+  		allow read;
+    	allow write: if request.auth.token.admin==true || (request.auth.token.powerUser==true && articleId.authorId==request.auth.uid);
+ 	 }
+   //match messages
+   match /messages/{messageId}{
+  	 	allow read;
+  		allow write:if request.auth.uid!=null;
+   }
+   //match users
+   match /users/{userId}{
+   	 	allow read;
+  		allow create;
+      allow update,delete: if request.auth.token.admin==true
+   }
   }
 }

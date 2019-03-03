@@ -15,7 +15,7 @@ class AddArticle extends Component {
     super(props);
     this.state = {
       article: {
-        title: null,
+        title: "",
         content: "",
         author: "",
         authorId: "",
@@ -31,7 +31,7 @@ class AddArticle extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store;
-    firestore.get({
+    firestore.onSnapshot({
       collection: "articles",
       doc: this.props.match.params.id,
       storeAs: "article"

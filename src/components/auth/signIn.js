@@ -53,7 +53,7 @@ const SignIn = props => {
         </form>
       </div>
       <div className="center">
-        <div className="text-light" id="message">
+        <div className="toogle" id="message">
           {strings.auth.notMember}
           <span className="toogle" onClick={showSignup}>
             {" "}
@@ -62,15 +62,15 @@ const SignIn = props => {
         </div>
       </div>
       <div className="center">
-        <div className="text-light" id="message">
-          <span className="toogle" onClick={showPasswordReset}>
+        <div className="text-light toogle"  onClick={showPasswordReset}>
+          
             {strings.auth.resetPasswordText}
-          </span>
+         
         </div>
       </div>
       <div className="signup-message">
         <br />
-        <p className="text-center">
+        <p className="text-center error">
           {error.error !== false ? (
             error.error
           ) : auth.uid ? (

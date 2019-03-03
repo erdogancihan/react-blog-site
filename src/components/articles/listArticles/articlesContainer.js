@@ -26,7 +26,7 @@ class ArticlesContainer extends Component {
   componentDidMount() {
     const { firestore} = this.context.store;
    // console.log(this.props.language)
-    firestore.get({
+    firestore.onSnapshot({
       collection: "articles",
       where: ["language", "==", this.props.language],
       orderBy: ["date", "desc"]

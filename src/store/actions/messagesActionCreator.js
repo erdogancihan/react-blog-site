@@ -59,7 +59,7 @@ export function fetchMessages() {
     const language = getState().language.language;
     const fireStore = getFirestore();
     fireStore
-      .get({
+      .onSnapshot({
         collection: "messages",
         where: ["lang", "==", language],
         orderBy: ["date"]

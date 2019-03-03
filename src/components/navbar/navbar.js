@@ -25,15 +25,19 @@ export class Navbar extends Component {
   };
 
   componentDidMount() {
-    const { firestore, firebase} = this.context.store;
+    const { firestore, firebase } = this.context.store;
     const auth = this.props.auth;
     const authListener = firebase.auth();
 
-    authListener.onAuthStateChanged(function(user) {
+    authListener.onAuthStateChanged(user => {
       if (user) {
-       // alert(user.uid, user.emailVerified.toString());
+        user.getIdTokenResult().then(idTokenResult => {
+          auth.isPowerUser = idTokenResult.claims.powerUser;
+          auth.isAdmin = idTokenResult.claims.admin;
+          console.log(idTokenResult.claims);
+        });
         if (auth.uid && auth.emailVerified === true) {
-          firestore.get({
+          firestore.onSnapshot({
             collection: "users",
             doc: auth.uid,
             storeAs: "user"
@@ -41,113 +45,106 @@ export class Navbar extends Component {
         }
       }
     });
-    //console.log(authListener);
-
-    
   }
-  /*
+
   componentDidUpdate() {
-    const { firestore, firebase } = this.context.store;
+    const { firebase } = this.context.store;
     const auth = this.props.auth;
-    console.log(this.props)
-    const props=this.props
-    console.log(props)
-    firebase.auth().onAuthStateChanged(function(user) {
+    const authListener = firebase.auth();
+
+    authListener.onAuthStateChanged(user => {
       if (user) {
-        // User is signed in.
-        console.log(props)
-        if (!props.user)
-          if (auth.emailVerified === true) {
-            firestore.get({
-              collection: "users",
-              doc: auth.uid,
-              storeAs: "user"
-            });
-          }
-      } else {
-        // No user is signed in.
+        user.getIdTokenResult().then(idTokenResult => {
+          auth.isPowerUser = idTokenResult.claims.powerUser;
+          auth.isAdmin = idTokenResult.claims.admin;
+          console.log(idTokenResult.claims);
+        });
       }
     });
   }
-*/
+
+  LogOut = () => {
+    console.log("logout");
+    this.props.logOut();
+  };
+
+  handleShowArticle = () => {
+    let view = {
+      single: "",
+      all: true,
+      monthly: ""
+    };
+    this.props.showArticle(view);
+  };
+
+  toggleClass = () => {
+    const navs = document.querySelectorAll(".navbar-items");
+    navs.forEach(nav => nav.classList.toggle("navbar-toggleShow"));
+  };
+
   render() {
-    const { logOut, strings,  user } = this.props;
-    const LogOut = () => {
-      console.log("logout");
-      logOut();
-    };
-
-    const handleShowArticle = () => {
-      let view = {
-        single: "",
-        all: true,
-        monthly: ""
-      };
-      this.props.showArticle(view);
-    };
-
-    const toggleClass = () => {
-      const navs = document.querySelectorAll(".navbar-items");
-      navs.forEach(nav => nav.classList.toggle("navbar-toggleShow"));
-    };
-
-    return (
+    const { strings, user, auth } = this.props;
+       return (
       <div className="navbar">
         <CookieConsent>
           This website uses cookies to enhance the user experience.
         </CookieConsent>
-        <div className="nav-link navbar-brand" onClick={handleShowArticle}>
-          <Link to="/">FLOPPY HOME</Link>
+
+        <div className="nav-link navbar-brand" onClick={this.handleShowArticle}>
+          <Link to="/">MEDICAL STATISTICS</Link>
         </div>
-        <div className="nav-link nav-link-toggle" onClick={toggleClass}>
+        <div className="nav-link nav-link-toggle" onClick={this.toggleClass}>
           <i className="fas fa-bars" />
         </div>
         <nav className="navbar-items">
           <div className="nav-link">
-            <Link to="/about" onClick={toggleClass}>
+            <Link to="/about" onClick={this.toggleClass}>
               {strings.navbar.about}
             </Link>
           </div>
           <div className="nav-link">
-            <Link to="/terms" onClick={toggleClass}>
+            <Link to="/terms" onClick={this.toggleClass}>
               {strings.navbar.terms}
             </Link>
           </div>
           <div className="nav-link">
-            <CategoriesContainer strings={strings} toggleClass={toggleClass} />
+            <CategoriesContainer
+              strings={strings}
+              toggleClass={this.toggleClass}
+            />
           </div>
         </nav>
 
         <nav className="navbar-items navbar-items-right">
           <div className="nav-link"> </div>
           {!user ? (
-            <LoggedOut strings={strings} toggleClass={toggleClass} />
-          ) : user.privilege === "admin" ? (
+            <LoggedOut strings={strings} toggleClass={this.toggleClass} />
+          ) : auth.isAdmin === true ? (
             <React.Fragment>
-              <Admin strings={strings} toggleClass={toggleClass} />
+              <Admin strings={strings} toggleClass={this.toggleClass} />
               <LoggedIn
                 user={user}
-                LogOut={LogOut}
+                LogOut={this.LogOut}
                 strings={strings}
-                toggleClass={toggleClass}
+                toggleClass={this.toggleClass}
               />
             </React.Fragment>
-          ) : user.privilege === "powerUser" ? (
+          ) : auth.isPowerUser === true ? (
             <React.Fragment>
-              <PowerUser strings={strings} toggleClass={toggleClass} />
+              <PowerUser strings={strings} toggleClass={this.toggleClass} />
               <LoggedIn
                 user={user}
-                LogOut={LogOut}
+                LogOut={this.LogOut}
                 strings={strings}
-                toggleClass={toggleClass}
+                toggleClass={this.toggleClass}
               />
             </React.Fragment>
           ) : (
             <LoggedIn
               user={user}
-              LogOut={LogOut}
+              LogOut={this.LogOut}
               strings={strings}
-              toggleClass={toggleClass}
+              toggleClass={this.toggleClass}
             />
           )}
         </nav>
@@ -157,7 +154,6 @@ export class Navbar extends Component {
 }
 
 const mapStateToProps = state => {
-
   return {
     language: state.language.language,
     user: state.firestore.data.user,

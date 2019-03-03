@@ -55,7 +55,7 @@ const ChangePassword = props => {
             <button className="button">{strings.auth.change}</button>
           </div>
           {error.error!==false? (
-          <div>{strings.auth.passwordChangeError}</div>
+          <div className="error">{strings.auth.passwordChangeError}</div>
           ) :  error.response === true ? (
             <div>{strings.auth.passwordChanged}</div>
           ) : (

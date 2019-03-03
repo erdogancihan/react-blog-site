@@ -23,9 +23,9 @@ class App extends Component {
         <div className="App">
           <Helmet>
             <meta charset="utf-8" />
-            <title>FLOPPY HOME</title>
-            <meta name="description" content="Floppy Home. Technology and Web design blog site" />
-            <link rel="canonical" href="https://floppyhome.com" />
+            <title>MEDICAL STATISTICS</title>
+            <meta name="description" content="Medical statistics." />
+            <link rel="canonical" href="" />
           </Helmet>
           <Topnav />
           <Navbar />

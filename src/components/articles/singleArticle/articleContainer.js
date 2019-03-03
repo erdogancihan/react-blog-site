@@ -19,7 +19,7 @@ class ArticleContainer extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store;
-    firestore.get({
+    firestore.onSnapShot({
       collection: "articles",
       doc: this.props.match.params.id,
       storeAs: "article"
