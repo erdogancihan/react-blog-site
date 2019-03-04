@@ -41,7 +41,7 @@ class AddArticle extends Component {
   componentDidUpdate(previousProps, previousState) {
     if (previousProps.article !== this.props.article) {
       if (this.props.match.params.id) {
-        if (this.state.article.title === null) {
+        if (this.state.article.title === "") {
           this.setStateWithProps();
         }
       }
@@ -74,6 +74,7 @@ class AddArticle extends Component {
       this.props.addArticle(this.state.article);
       //if it is a edited article dispatches editarticle
     } else {
+      console.log(this.state)
       this.props.editArticle(this.state.article);
     }
     //if there is an error alerts and pushes to main page

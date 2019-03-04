@@ -3,7 +3,8 @@ service cloud.firestore {
   //match articles
   	match /articles/{articleId}{
   		allow read;
-    	allow write: if request.auth.token.admin==true || (request.auth.token.powerUser==true && articleId.authorId==request.auth.uid);
+    	allow write: if (request.auth.token.powerUser==true && articleId.authorId==request.auth.uid);
+     	allow write: if request.auth.token.admin==true;
  	 }
    //match messages
    match /messages/{messageId}{
@@ -14,7 +15,17 @@ service cloud.firestore {
    match /users/{userId}{
    	 	allow read;
   		allow create;
-      allow update,delete: if request.auth.token.admin==true
+      allow update,delete: if request.auth.token.admin==true;
    }
-  }
+   //match about
+   match /about/{aboutId}{
+  		allow read;
+    	allow write: if request.auth.token.admin==true;
+  	}
+    //match terms
+   match /terms/{termsId}{
+  		allow read;
+    	allow write: if request.auth.token.admin==true;
+  	}
+	}
 }

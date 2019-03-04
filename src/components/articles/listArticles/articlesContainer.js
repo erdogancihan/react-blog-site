@@ -185,7 +185,7 @@ class ArticlesContainer extends Component {
   }
 }
 const mapStateToProps = state => {
-  //console.log(state)
+ 
   return {
     language: state.language.language,
     articles: state.firestore.ordered.articles,

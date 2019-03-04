@@ -34,7 +34,6 @@ export class Navbar extends Component {
         user.getIdTokenResult().then(idTokenResult => {
           auth.isPowerUser = idTokenResult.claims.powerUser;
           auth.isAdmin = idTokenResult.claims.admin;
-          console.log(idTokenResult.claims);
         });
         if (auth.uid && auth.emailVerified === true) {
           firestore.onSnapshot({
@@ -57,7 +56,6 @@ export class Navbar extends Component {
         user.getIdTokenResult().then(idTokenResult => {
           auth.isPowerUser = idTokenResult.claims.powerUser;
           auth.isAdmin = idTokenResult.claims.admin;
-          console.log(idTokenResult.claims);
         });
       }
     });
@@ -84,7 +82,7 @@ export class Navbar extends Component {
 
   render() {
     const { strings, user, auth } = this.props;
-       return (
+    return (
       <div className="navbar">
         <CookieConsent>
           This website uses cookies to enhance the user experience.

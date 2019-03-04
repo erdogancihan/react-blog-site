@@ -9,12 +9,10 @@ export const addArticle = article => {
     const authorId = getState().firebase.auth.uid;
     const newArticle = { ...article, author, authorId };
 
-console.log(newArticle)
+    console.log(newArticle);
     firestore
       .collection("articles")
-      .add(
-        newArticle
-      )
+      .add(newArticle)
       .then(response => {
         console.log(response);
       })
@@ -27,7 +25,7 @@ console.log(newArticle)
 export function editArticle(article) {
   return (dispatch, getState, { getFirestore }) => {
     const fireStore = getFirestore();
-
+console.log(article)
     fireStore
       .update({ collection: "articles", doc: article.id }, article)
       .then(resp => {

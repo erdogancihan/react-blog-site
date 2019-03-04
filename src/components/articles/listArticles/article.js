@@ -13,7 +13,7 @@ class article extends Component {
     viewMessageId: ""
   };
   render() {
-    const { article, auth, handleDelete, user, strings } = this.props;
+    const { article, auth, handleDelete, strings } = this.props;
 
     //expends or collapses the selected article
     const viewContent = id => {

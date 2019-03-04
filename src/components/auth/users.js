@@ -6,7 +6,6 @@ import { compose } from "redux";
 import { deleteUser, editUser } from "../../store/actions/usersActionCreator";
 import { clearAuthMessages } from "../../store/actions/usersActions";
 import User from "./user";
-import { auth } from "firebase";
 
 export class Users extends Component {
   constructor(props) {

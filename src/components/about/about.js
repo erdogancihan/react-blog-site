@@ -3,13 +3,11 @@ import { connect } from "react-redux";
 import CKEditor from "react-ckeditor-component";
 import PropTypes from "prop-types";
 
-
 class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      about: ` <h2>About Me</h2>
-       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias officiis recusandae fugiat tempore, magni praesentium abreiciendis eos iure. Odit ex eligendi soluta recusandae adipisci molestias veritatis cum placeat dolore.</p>`,
+      about: `loading...`,
       edit: false,
       classNameAdmin: "hide"
     };
@@ -20,17 +18,28 @@ class About extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store;
-    firestore.onSnapshot({
-      collection: "about",
-      doc: this.props.lang
+    firestore.get({
+      collection: "about"
     });
-    this.props.auth.isAdmin === true
-      ? this.setState({
-          classNameAdmin: "hide"
-        })
-      : this.setState({
-          classNameAdmin: "readMore"
-        });
+  }
+
+  componentDidUpdate(previousProps) {
+    if (
+      previousProps.about !== this.props.about ||
+      previousProps.lang !== this.props.lang ||
+      previousProps.auth !== this.props.auth
+    ) {
+      this.props.auth.isAdmin
+        ? this.setState({
+            classNameAdmin: "readMore"
+          })
+        : this.setState({
+            classNameAdmin: "hide"
+          });
+      if (this.props.about && this.props.about[this.props.lang]) {
+        this.setState({ about: this.props.about[this.props.lang].about });
+      } else this.setState({ about: "lütfen veri girişi yapınız." });
+    }
   }
 
   //handles changes on CKEditor for article content
@@ -39,68 +48,56 @@ class About extends Component {
     let newContent = evt.editor.getData();
     this.setState({
       ...this.state,
-      about: { ...this.state.about, content: newContent }
+      about: newContent
     });
     // console.log(evt.editor.getData());
   };
 
   toggleEdit = () => {
+    console.log(this.state);
+    if (this.state.edit === true) {
+      const { firestore } = this.context.store;
+      let data = { about: this.state.about };
+      firestore
+        .set(
+          {
+            collection: "about",
+            doc: this.props.lang
+          },
+          data
+        )
+        .then(resp => {
+          return console.log(resp);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
     this.setState({
-      edit: true
+      edit: !this.state.edit
     });
   };
+
   render() {
-    const { lang } = this.props;
+   
     return (
       <div className="about-container">
-        {lang === "en" ? (
-          this.state.edit === true ? (
-            <div>
-              <CKEditor
-                className="CKeditor"
-                content={this.state.about}
-                events={{
-                  change: this.onChange
-                }}
-              />
-            </div>
-          ) : (
-            <div>
-              <h2>About me?</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Molestias officiis recusandae fugiat tempore, magni praesentium
-                ab reiciendis eos iure. Odit ex eligendi soluta recusandae
-                adipisci molestias veritatis cum placeat dolore.
-              </p>
-            </div>
-          )
-        ) : null}
-        {lang === "tr" ? (
+        {this.state.edit === true ? (
           <div>
-            <h2>Ben Kimim?</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
-              officiis recusandae fugiat tempore, magni praesentium ab
-              reiciendis eos iure. Odit ex eligendi soluta recusandae adipisci
-              molestias veritatis cum placeat dolore.
-            </p>
+            <CKEditor
+              className="CKeditor"
+              content={this.state.about}
+              events={{
+                change: this.onChange
+              }}
+            />
           </div>
-        ) : null}
-        {lang === "de" ? (
-          <div>
-            <h2>About Me</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
-              officiis recusandae fugiat tempore, magni praesentium ab
-              reiciendis eos iure. Odit ex eligendi soluta recusandae adipisci
-              molestias veritatis cum placeat dolore.
-            </p>
-          </div>
-        ) : null}
-
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: this.state.about }} />
+        )}
         <div className={this.state.classNameAdmin} onClick={this.toggleEdit}>
-          <i className="fas fa-edit" /> <span> </span> <i>Düzenle</i>
+          <i className="fas fa-edit" /> <span> </span>{" "}
+          {this.state.edit === false ? <i>Düzenle </i> : <i>Kaydet</i>}
         </div>
       </div>
     );
@@ -108,9 +105,11 @@ class About extends Component {
 }
 
 const mapStateToProps = state => {
+
   return {
     lang: state.language.language,
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    about: state.firestore.data.about
   };
 };
 export default connect(mapStateToProps)(About);

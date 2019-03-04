@@ -12,7 +12,7 @@ const Contact = () => {
 
       
 
-      <p className="text-center">Copyright &copy; 2018,Developed by E.C.</p>
+      <p className="text-center">Copyright &copy; 2019,Developed by E.C.</p>
 
     </div>
   );
